@@ -52,7 +52,6 @@ module.exports = {
   async index(req, res) {
     const ans = [];
     for (let [key, value] of games) {
-      console.log(key);
       ans.push({
         id: key,
         game: filterResponseData(value),
@@ -66,11 +65,9 @@ module.exports = {
     const { user, name } = req.headers;
 
     if (!name) return res.send({ error: "Favor, crie um registro antes." });
-    if (games.has(id) === false)
-      return res.send({ error: "Jogo não encontrado." });
+    if (!games.has(id)) return res.send({ error: "Jogo não encontrado." });
 
     const game = games.get(id);
-    console.log(game);
 
     // Se um outro usuário válido requisitar o jogo, ele será o segundo jogador
     if (user !== game.players[0].user && game.players.length === 1) {
