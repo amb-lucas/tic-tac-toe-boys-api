@@ -116,14 +116,27 @@ module.exports = {
       if (gameOver(game.state)) game.winner = game.round % 2;
       game.round++;
 
-      // Após terminar o jogo, deleta-se o index do map após 3h.
+      // Se o jogo tiver acabado, agendar deleção em 1 dia.
       if (game.round === 9 || game.winner !== -1) {
         setTimeout(() => {
-          games.delete(id);
-        }, 3 * 3600 * 1000);
+          if (games.has(id)) games.delete(id);
+        }, 1000 * 24 * 3600);
       }
 
       res.send(filterResponseData(game));
     }
+  },
+
+  async delete(req, res) {
+    const { id } = req.params;
+    const { user } = req.headers;
+
+    if (!games.has(id)) return res.send({ error: "Jogo não encontrado." });
+
+    const game = games.get(id);
+    if (user === game.players[0].user) {
+      games.delete(id);
+      res.send({ ok: "Jogo deletado com sucesso." });
+    } else res.send({ error: "Falta permissão para a deleção do jogo." });
   },
 };
