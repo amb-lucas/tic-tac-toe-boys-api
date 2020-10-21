@@ -77,7 +77,7 @@ module.exports = {
     res.send(filterResponseData(games.get(id)));
   },
 
-  async post(req, res) {
+  async update(req, res) {
     const { id } = req.params;
     const { user } = req.headers;
     const { choice } = req.body;

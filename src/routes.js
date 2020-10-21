@@ -7,6 +7,6 @@ const routes = express.Router();
 routes.get("/games", GameController.index);
 routes.post("/games", GameController.create);
 routes.get("/games/:id", GameController.show);
-routes.post("/games/:id", GameController.post);
+routes.put("/games/:id", GameController.update);
 
 module.exports = routes;
